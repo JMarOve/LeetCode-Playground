@@ -1,5 +1,5 @@
 # LeetCode-Playground
-Just submitting solutions to LeetCode problems in Python for fun 
+Just me wrestling with LeetCode problems in Python for fun—because who needs Sudoku when you have algorithms to debug and sanity to question?"
 <!---LeetCode Topics Start-->
 # LeetCode Topics
 ## Array
