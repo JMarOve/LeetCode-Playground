@@ -1,7 +1,7 @@
 # LeetCode-Playground
 Just me wrestling with LeetCode problems in Python for fun—because who needs Sudoku when you have algorithms to debug and sanity to question?"
 
-#To do:
+# To do:
 - [ ] Organize the repo with folders. It's not clear if it's better to have easy-medium-hard or just by numbers.
 - [ ] Create a parallel repo with C++/Rust solutions
 <!---LeetCode Topics Start-->
