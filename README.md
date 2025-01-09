@@ -48,4 +48,8 @@ Just me wrestling with LeetCode problems in Python for fun—because who needs S
 |  |
 | ------- |
 | [0013-roman-to-integer](https://github.com/JMarOve/LeetCode-Playground/tree/master/0013-roman-to-integer) |
+## Database
+|  |
+| ------- |
+| [0175-combine-two-tables](https://github.com/JMarOve/LeetCode-Playground/tree/master/0175-combine-two-tables) |
 <!---LeetCode Topics End-->
