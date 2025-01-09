@@ -1,5 +1,8 @@
 #Just the good old Newton's method
-
+#We want to find the zeros of the function f(y)=y^2 - x
+#df/dy=2y
+#Newton method is xn+1=xn-f(x_n)/df(xn)
+#Therefore xn+1 = xn- (xn^2-x)/2xn=1/2(xn+x/xn)
 class Solution:
     def mySqrt(self, x: int) -> int:
         if x < 2:
