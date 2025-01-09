@@ -12,6 +12,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 | [0001-two-sum](https://github.com/JMarOve/LeetCode-Playground/tree/master/0001-two-sum) |
 | [0268-missing-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0268-missing-number) |
 | [0448-find-all-numbers-disappeared-in-an-array](https://github.com/JMarOve/LeetCode-Playground/tree/master/0448-find-all-numbers-disappeared-in-an-array) |
+| [1395-minimum-time-visiting-all-points](https://github.com/JMarOve/LeetCode-Playground/tree/master/1395-minimum-time-visiting-all-points) |
 | [1482-how-many-numbers-are-smaller-than-the-current-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/1482-how-many-numbers-are-smaller-than-the-current-number) |
 ## Hash Table
 |  |
@@ -27,6 +28,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 | [0009-palindrome-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0009-palindrome-number) |
 | [0013-roman-to-integer](https://github.com/JMarOve/LeetCode-Playground/tree/master/0013-roman-to-integer) |
 | [0268-missing-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0268-missing-number) |
+| [1395-minimum-time-visiting-all-points](https://github.com/JMarOve/LeetCode-Playground/tree/master/1395-minimum-time-visiting-all-points) |
 ## Binary Search
 |  |
 | ------- |
@@ -52,4 +54,8 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 |  |
 | ------- |
 | [0175-combine-two-tables](https://github.com/JMarOve/LeetCode-Playground/tree/master/0175-combine-two-tables) |
+## Geometry
+|  |
+| ------- |
+| [1395-minimum-time-visiting-all-points](https://github.com/JMarOve/LeetCode-Playground/tree/master/1395-minimum-time-visiting-all-points) |
 <!---LeetCode Topics End-->
