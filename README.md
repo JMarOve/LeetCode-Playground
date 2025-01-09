@@ -28,11 +28,13 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 | ------- |
 | [0009-palindrome-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0009-palindrome-number) |
 | [0013-roman-to-integer](https://github.com/JMarOve/LeetCode-Playground/tree/master/0013-roman-to-integer) |
+| [0069-sqrtx](https://github.com/JMarOve/LeetCode-Playground/tree/master/0069-sqrtx) |
 | [0268-missing-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0268-missing-number) |
 | [1395-minimum-time-visiting-all-points](https://github.com/JMarOve/LeetCode-Playground/tree/master/1395-minimum-time-visiting-all-points) |
 ## Binary Search
 |  |
 | ------- |
+| [0069-sqrtx](https://github.com/JMarOve/LeetCode-Playground/tree/master/0069-sqrtx) |
 | [0268-missing-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0268-missing-number) |
 ## Bit Manipulation
 |  |
