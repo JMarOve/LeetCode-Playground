@@ -54,6 +54,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 | ------- |
 | [0013-roman-to-integer](https://github.com/JMarOve/LeetCode-Playground/tree/master/0013-roman-to-integer) |
 | [0014-longest-common-prefix](https://github.com/JMarOve/LeetCode-Playground/tree/master/0014-longest-common-prefix) |
+| [0020-valid-parentheses](https://github.com/JMarOve/LeetCode-Playground/tree/master/0020-valid-parentheses) |
 ## Database
 |  |
 | ------- |
@@ -74,4 +75,8 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 |  |
 | ------- |
 | [0014-longest-common-prefix](https://github.com/JMarOve/LeetCode-Playground/tree/master/0014-longest-common-prefix) |
+## Stack
+|  |
+| ------- |
+| [0020-valid-parentheses](https://github.com/JMarOve/LeetCode-Playground/tree/master/0020-valid-parentheses) |
 <!---LeetCode Topics End-->
