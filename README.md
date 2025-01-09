@@ -51,6 +51,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 |  |
 | ------- |
 | [0013-roman-to-integer](https://github.com/JMarOve/LeetCode-Playground/tree/master/0013-roman-to-integer) |
+| [0014-longest-common-prefix](https://github.com/JMarOve/LeetCode-Playground/tree/master/0014-longest-common-prefix) |
 ## Database
 |  |
 | ------- |
@@ -67,4 +68,8 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 |  |
 | ------- |
 | [0054-spiral-matrix](https://github.com/JMarOve/LeetCode-Playground/tree/master/0054-spiral-matrix) |
+## Trie
+|  |
+| ------- |
+| [0014-longest-common-prefix](https://github.com/JMarOve/LeetCode-Playground/tree/master/0014-longest-common-prefix) |
 <!---LeetCode Topics End-->
