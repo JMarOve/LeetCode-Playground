@@ -10,6 +10,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 |  |
 | ------- |
 | [0001-two-sum](https://github.com/JMarOve/LeetCode-Playground/tree/master/0001-two-sum) |
+| [0054-spiral-matrix](https://github.com/JMarOve/LeetCode-Playground/tree/master/0054-spiral-matrix) |
 | [0268-missing-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0268-missing-number) |
 | [0448-find-all-numbers-disappeared-in-an-array](https://github.com/JMarOve/LeetCode-Playground/tree/master/0448-find-all-numbers-disappeared-in-an-array) |
 | [1395-minimum-time-visiting-all-points](https://github.com/JMarOve/LeetCode-Playground/tree/master/1395-minimum-time-visiting-all-points) |
@@ -58,4 +59,12 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 |  |
 | ------- |
 | [1395-minimum-time-visiting-all-points](https://github.com/JMarOve/LeetCode-Playground/tree/master/1395-minimum-time-visiting-all-points) |
+## Matrix
+|  |
+| ------- |
+| [0054-spiral-matrix](https://github.com/JMarOve/LeetCode-Playground/tree/master/0054-spiral-matrix) |
+## Simulation
+|  |
+| ------- |
+| [0054-spiral-matrix](https://github.com/JMarOve/LeetCode-Playground/tree/master/0054-spiral-matrix) |
 <!---LeetCode Topics End-->
