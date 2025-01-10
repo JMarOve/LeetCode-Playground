@@ -30,6 +30,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 | [0013-roman-to-integer](https://github.com/JMarOve/LeetCode-Playground/tree/master/0013-roman-to-integer) |
 | [0069-sqrtx](https://github.com/JMarOve/LeetCode-Playground/tree/master/0069-sqrtx) |
 | [0268-missing-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0268-missing-number) |
+| [0412-fizz-buzz](https://github.com/JMarOve/LeetCode-Playground/tree/master/0412-fizz-buzz) |
 | [1395-minimum-time-visiting-all-points](https://github.com/JMarOve/LeetCode-Playground/tree/master/1395-minimum-time-visiting-all-points) |
 ## Binary Search
 |  |
@@ -55,6 +56,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 | [0013-roman-to-integer](https://github.com/JMarOve/LeetCode-Playground/tree/master/0013-roman-to-integer) |
 | [0014-longest-common-prefix](https://github.com/JMarOve/LeetCode-Playground/tree/master/0014-longest-common-prefix) |
 | [0020-valid-parentheses](https://github.com/JMarOve/LeetCode-Playground/tree/master/0020-valid-parentheses) |
+| [0412-fizz-buzz](https://github.com/JMarOve/LeetCode-Playground/tree/master/0412-fizz-buzz) |
 ## Database
 |  |
 | ------- |
@@ -71,6 +73,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 |  |
 | ------- |
 | [0054-spiral-matrix](https://github.com/JMarOve/LeetCode-Playground/tree/master/0054-spiral-matrix) |
+| [0412-fizz-buzz](https://github.com/JMarOve/LeetCode-Playground/tree/master/0412-fizz-buzz) |
 ## Trie
 |  |
 | ------- |
