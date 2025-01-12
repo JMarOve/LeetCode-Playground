@@ -57,6 +57,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 | [0013-roman-to-integer](https://github.com/JMarOve/LeetCode-Playground/tree/master/0013-roman-to-integer) |
 | [0014-longest-common-prefix](https://github.com/JMarOve/LeetCode-Playground/tree/master/0014-longest-common-prefix) |
 | [0020-valid-parentheses](https://github.com/JMarOve/LeetCode-Playground/tree/master/0020-valid-parentheses) |
+| [0028-find-the-index-of-the-first-occurrence-in-a-string](https://github.com/JMarOve/LeetCode-Playground/tree/master/0028-find-the-index-of-the-first-occurrence-in-a-string) |
 | [0412-fizz-buzz](https://github.com/JMarOve/LeetCode-Playground/tree/master/0412-fizz-buzz) |
 ## Database
 |  |
@@ -87,4 +88,9 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 |  |
 | ------- |
 | [0027-remove-element](https://github.com/JMarOve/LeetCode-Playground/tree/master/0027-remove-element) |
+| [0028-find-the-index-of-the-first-occurrence-in-a-string](https://github.com/JMarOve/LeetCode-Playground/tree/master/0028-find-the-index-of-the-first-occurrence-in-a-string) |
+## String Matching
+|  |
+| ------- |
+| [0028-find-the-index-of-the-first-occurrence-in-a-string](https://github.com/JMarOve/LeetCode-Playground/tree/master/0028-find-the-index-of-the-first-occurrence-in-a-string) |
 <!---LeetCode Topics End-->
