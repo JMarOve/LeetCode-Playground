@@ -10,6 +10,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 |  |
 | ------- |
 | [0001-two-sum](https://github.com/JMarOve/LeetCode-Playground/tree/master/0001-two-sum) |
+| [0027-remove-element](https://github.com/JMarOve/LeetCode-Playground/tree/master/0027-remove-element) |
 | [0054-spiral-matrix](https://github.com/JMarOve/LeetCode-Playground/tree/master/0054-spiral-matrix) |
 | [0268-missing-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0268-missing-number) |
 | [0448-find-all-numbers-disappeared-in-an-array](https://github.com/JMarOve/LeetCode-Playground/tree/master/0448-find-all-numbers-disappeared-in-an-array) |
@@ -82,4 +83,8 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 |  |
 | ------- |
 | [0020-valid-parentheses](https://github.com/JMarOve/LeetCode-Playground/tree/master/0020-valid-parentheses) |
+## Two Pointers
+|  |
+| ------- |
+| [0027-remove-element](https://github.com/JMarOve/LeetCode-Playground/tree/master/0027-remove-element) |
 <!---LeetCode Topics End-->
