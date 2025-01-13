@@ -11,6 +11,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 | ------- |
 | [0001-two-sum](https://github.com/JMarOve/LeetCode-Playground/tree/master/0001-two-sum) |
 | [0027-remove-element](https://github.com/JMarOve/LeetCode-Playground/tree/master/0027-remove-element) |
+| [0035-search-insert-position](https://github.com/JMarOve/LeetCode-Playground/tree/master/0035-search-insert-position) |
 | [0054-spiral-matrix](https://github.com/JMarOve/LeetCode-Playground/tree/master/0054-spiral-matrix) |
 | [0268-missing-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0268-missing-number) |
 | [0448-find-all-numbers-disappeared-in-an-array](https://github.com/JMarOve/LeetCode-Playground/tree/master/0448-find-all-numbers-disappeared-in-an-array) |
@@ -36,6 +37,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 ## Binary Search
 |  |
 | ------- |
+| [0035-search-insert-position](https://github.com/JMarOve/LeetCode-Playground/tree/master/0035-search-insert-position) |
 | [0069-sqrtx](https://github.com/JMarOve/LeetCode-Playground/tree/master/0069-sqrtx) |
 | [0268-missing-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0268-missing-number) |
 ## Bit Manipulation
