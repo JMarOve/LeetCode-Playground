@@ -13,6 +13,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 | [0027-remove-element](https://github.com/JMarOve/LeetCode-Playground/tree/master/0027-remove-element) |
 | [0035-search-insert-position](https://github.com/JMarOve/LeetCode-Playground/tree/master/0035-search-insert-position) |
 | [0054-spiral-matrix](https://github.com/JMarOve/LeetCode-Playground/tree/master/0054-spiral-matrix) |
+| [0118-pascals-triangle](https://github.com/JMarOve/LeetCode-Playground/tree/master/0118-pascals-triangle) |
 | [0268-missing-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0268-missing-number) |
 | [0448-find-all-numbers-disappeared-in-an-array](https://github.com/JMarOve/LeetCode-Playground/tree/master/0448-find-all-numbers-disappeared-in-an-array) |
 | [1395-minimum-time-visiting-all-points](https://github.com/JMarOve/LeetCode-Playground/tree/master/1395-minimum-time-visiting-all-points) |
@@ -95,4 +96,8 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 |  |
 | ------- |
 | [0028-find-the-index-of-the-first-occurrence-in-a-string](https://github.com/JMarOve/LeetCode-Playground/tree/master/0028-find-the-index-of-the-first-occurrence-in-a-string) |
+## Dynamic Programming
+|  |
+| ------- |
+| [0118-pascals-triangle](https://github.com/JMarOve/LeetCode-Playground/tree/master/0118-pascals-triangle) |
 <!---LeetCode Topics End-->
