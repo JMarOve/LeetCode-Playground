@@ -15,6 +15,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 | [0054-spiral-matrix](https://github.com/JMarOve/LeetCode-Playground/tree/master/0054-spiral-matrix) |
 | [0118-pascals-triangle](https://github.com/JMarOve/LeetCode-Playground/tree/master/0118-pascals-triangle) |
 | [0119-pascals-triangle-ii](https://github.com/JMarOve/LeetCode-Playground/tree/master/0119-pascals-triangle-ii) |
+| [0121-best-time-to-buy-and-sell-stock](https://github.com/JMarOve/LeetCode-Playground/tree/master/0121-best-time-to-buy-and-sell-stock) |
 | [0136-single-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0136-single-number) |
 | [0268-missing-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0268-missing-number) |
 | [0448-find-all-numbers-disappeared-in-an-array](https://github.com/JMarOve/LeetCode-Playground/tree/master/0448-find-all-numbers-disappeared-in-an-array) |
@@ -104,4 +105,5 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 | ------- |
 | [0118-pascals-triangle](https://github.com/JMarOve/LeetCode-Playground/tree/master/0118-pascals-triangle) |
 | [0119-pascals-triangle-ii](https://github.com/JMarOve/LeetCode-Playground/tree/master/0119-pascals-triangle-ii) |
+| [0121-best-time-to-buy-and-sell-stock](https://github.com/JMarOve/LeetCode-Playground/tree/master/0121-best-time-to-buy-and-sell-stock) |
 <!---LeetCode Topics End-->
