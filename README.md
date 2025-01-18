@@ -14,6 +14,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 | [0027-remove-element](https://github.com/JMarOve/LeetCode-Playground/tree/master/0027-remove-element) |
 | [0035-search-insert-position](https://github.com/JMarOve/LeetCode-Playground/tree/master/0035-search-insert-position) |
 | [0054-spiral-matrix](https://github.com/JMarOve/LeetCode-Playground/tree/master/0054-spiral-matrix) |
+| [0066-plus-one](https://github.com/JMarOve/LeetCode-Playground/tree/master/0066-plus-one) |
 | [0118-pascals-triangle](https://github.com/JMarOve/LeetCode-Playground/tree/master/0118-pascals-triangle) |
 | [0119-pascals-triangle-ii](https://github.com/JMarOve/LeetCode-Playground/tree/master/0119-pascals-triangle-ii) |
 | [0121-best-time-to-buy-and-sell-stock](https://github.com/JMarOve/LeetCode-Playground/tree/master/0121-best-time-to-buy-and-sell-stock) |
@@ -36,6 +37,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 | [0009-palindrome-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0009-palindrome-number) |
 | [0013-roman-to-integer](https://github.com/JMarOve/LeetCode-Playground/tree/master/0013-roman-to-integer) |
 | [0029-divide-two-integers](https://github.com/JMarOve/LeetCode-Playground/tree/master/0029-divide-two-integers) |
+| [0066-plus-one](https://github.com/JMarOve/LeetCode-Playground/tree/master/0066-plus-one) |
 | [0069-sqrtx](https://github.com/JMarOve/LeetCode-Playground/tree/master/0069-sqrtx) |
 | [0268-missing-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0268-missing-number) |
 | [0412-fizz-buzz](https://github.com/JMarOve/LeetCode-Playground/tree/master/0412-fizz-buzz) |
