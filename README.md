@@ -19,6 +19,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 | [0119-pascals-triangle-ii](https://github.com/JMarOve/LeetCode-Playground/tree/master/0119-pascals-triangle-ii) |
 | [0121-best-time-to-buy-and-sell-stock](https://github.com/JMarOve/LeetCode-Playground/tree/master/0121-best-time-to-buy-and-sell-stock) |
 | [0136-single-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0136-single-number) |
+| [0169-majority-element](https://github.com/JMarOve/LeetCode-Playground/tree/master/0169-majority-element) |
 | [0268-missing-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0268-missing-number) |
 | [0448-find-all-numbers-disappeared-in-an-array](https://github.com/JMarOve/LeetCode-Playground/tree/master/0448-find-all-numbers-disappeared-in-an-array) |
 | [1395-minimum-time-visiting-all-points](https://github.com/JMarOve/LeetCode-Playground/tree/master/1395-minimum-time-visiting-all-points) |
@@ -28,6 +29,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 | ------- |
 | [0001-two-sum](https://github.com/JMarOve/LeetCode-Playground/tree/master/0001-two-sum) |
 | [0013-roman-to-integer](https://github.com/JMarOve/LeetCode-Playground/tree/master/0013-roman-to-integer) |
+| [0169-majority-element](https://github.com/JMarOve/LeetCode-Playground/tree/master/0169-majority-element) |
 | [0268-missing-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0268-missing-number) |
 | [0448-find-all-numbers-disappeared-in-an-array](https://github.com/JMarOve/LeetCode-Playground/tree/master/0448-find-all-numbers-disappeared-in-an-array) |
 | [1482-how-many-numbers-are-smaller-than-the-current-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/1482-how-many-numbers-are-smaller-than-the-current-number) |
@@ -58,11 +60,13 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 ## Sorting
 |  |
 | ------- |
+| [0169-majority-element](https://github.com/JMarOve/LeetCode-Playground/tree/master/0169-majority-element) |
 | [0268-missing-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0268-missing-number) |
 | [1482-how-many-numbers-are-smaller-than-the-current-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/1482-how-many-numbers-are-smaller-than-the-current-number) |
 ## Counting
 |  |
 | ------- |
+| [0169-majority-element](https://github.com/JMarOve/LeetCode-Playground/tree/master/0169-majority-element) |
 | [1482-how-many-numbers-are-smaller-than-the-current-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/1482-how-many-numbers-are-smaller-than-the-current-number) |
 ## String
 |  |
@@ -121,4 +125,8 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 |  |
 | ------- |
 | [0070-climbing-stairs](https://github.com/JMarOve/LeetCode-Playground/tree/master/0070-climbing-stairs) |
+## Divide and Conquer
+|  |
+| ------- |
+| [0169-majority-element](https://github.com/JMarOve/LeetCode-Playground/tree/master/0169-majority-element) |
 <!---LeetCode Topics End-->
