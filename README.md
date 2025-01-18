@@ -35,6 +35,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 | ------- |
 | [0009-palindrome-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0009-palindrome-number) |
 | [0013-roman-to-integer](https://github.com/JMarOve/LeetCode-Playground/tree/master/0013-roman-to-integer) |
+| [0029-divide-two-integers](https://github.com/JMarOve/LeetCode-Playground/tree/master/0029-divide-two-integers) |
 | [0069-sqrtx](https://github.com/JMarOve/LeetCode-Playground/tree/master/0069-sqrtx) |
 | [0268-missing-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0268-missing-number) |
 | [0412-fizz-buzz](https://github.com/JMarOve/LeetCode-Playground/tree/master/0412-fizz-buzz) |
@@ -48,6 +49,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 ## Bit Manipulation
 |  |
 | ------- |
+| [0029-divide-two-integers](https://github.com/JMarOve/LeetCode-Playground/tree/master/0029-divide-two-integers) |
 | [0136-single-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0136-single-number) |
 | [0268-missing-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0268-missing-number) |
 ## Sorting
