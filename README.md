@@ -68,6 +68,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 | [0014-longest-common-prefix](https://github.com/JMarOve/LeetCode-Playground/tree/master/0014-longest-common-prefix) |
 | [0020-valid-parentheses](https://github.com/JMarOve/LeetCode-Playground/tree/master/0020-valid-parentheses) |
 | [0028-find-the-index-of-the-first-occurrence-in-a-string](https://github.com/JMarOve/LeetCode-Playground/tree/master/0028-find-the-index-of-the-first-occurrence-in-a-string) |
+| [0058-length-of-last-word](https://github.com/JMarOve/LeetCode-Playground/tree/master/0058-length-of-last-word) |
 | [0412-fizz-buzz](https://github.com/JMarOve/LeetCode-Playground/tree/master/0412-fizz-buzz) |
 ## Database
 |  |
