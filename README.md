@@ -40,6 +40,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 | [0009-palindrome-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0009-palindrome-number) |
 | [0013-roman-to-integer](https://github.com/JMarOve/LeetCode-Playground/tree/master/0013-roman-to-integer) |
 | [0029-divide-two-integers](https://github.com/JMarOve/LeetCode-Playground/tree/master/0029-divide-two-integers) |
+| [0050-powx-n](https://github.com/JMarOve/LeetCode-Playground/tree/master/0050-powx-n) |
 | [0066-plus-one](https://github.com/JMarOve/LeetCode-Playground/tree/master/0066-plus-one) |
 | [0069-sqrtx](https://github.com/JMarOve/LeetCode-Playground/tree/master/0069-sqrtx) |
 | [0070-climbing-stairs](https://github.com/JMarOve/LeetCode-Playground/tree/master/0070-climbing-stairs) |
@@ -132,4 +133,8 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 | ------- |
 | [0169-majority-element](https://github.com/JMarOve/LeetCode-Playground/tree/master/0169-majority-element) |
 | [0190-reverse-bits](https://github.com/JMarOve/LeetCode-Playground/tree/master/0190-reverse-bits) |
+## Recursion
+|  |
+| ------- |
+| [0050-powx-n](https://github.com/JMarOve/LeetCode-Playground/tree/master/0050-powx-n) |
 <!---LeetCode Topics End-->
