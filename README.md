@@ -44,6 +44,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 | [0066-plus-one](https://github.com/JMarOve/LeetCode-Playground/tree/master/0066-plus-one) |
 | [0069-sqrtx](https://github.com/JMarOve/LeetCode-Playground/tree/master/0069-sqrtx) |
 | [0070-climbing-stairs](https://github.com/JMarOve/LeetCode-Playground/tree/master/0070-climbing-stairs) |
+| [0231-power-of-two](https://github.com/JMarOve/LeetCode-Playground/tree/master/0231-power-of-two) |
 | [0268-missing-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0268-missing-number) |
 | [0412-fizz-buzz](https://github.com/JMarOve/LeetCode-Playground/tree/master/0412-fizz-buzz) |
 | [1395-minimum-time-visiting-all-points](https://github.com/JMarOve/LeetCode-Playground/tree/master/1395-minimum-time-visiting-all-points) |
@@ -59,6 +60,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 | [0029-divide-two-integers](https://github.com/JMarOve/LeetCode-Playground/tree/master/0029-divide-two-integers) |
 | [0136-single-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0136-single-number) |
 | [0190-reverse-bits](https://github.com/JMarOve/LeetCode-Playground/tree/master/0190-reverse-bits) |
+| [0231-power-of-two](https://github.com/JMarOve/LeetCode-Playground/tree/master/0231-power-of-two) |
 | [0268-missing-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0268-missing-number) |
 ## Sorting
 |  |
@@ -137,4 +139,5 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 |  |
 | ------- |
 | [0050-powx-n](https://github.com/JMarOve/LeetCode-Playground/tree/master/0050-powx-n) |
+| [0231-power-of-two](https://github.com/JMarOve/LeetCode-Playground/tree/master/0231-power-of-two) |
 <!---LeetCode Topics End-->
