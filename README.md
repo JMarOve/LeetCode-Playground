@@ -45,6 +45,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 | [0069-sqrtx](https://github.com/JMarOve/LeetCode-Playground/tree/master/0069-sqrtx) |
 | [0070-climbing-stairs](https://github.com/JMarOve/LeetCode-Playground/tree/master/0070-climbing-stairs) |
 | [0231-power-of-two](https://github.com/JMarOve/LeetCode-Playground/tree/master/0231-power-of-two) |
+| [0258-add-digits](https://github.com/JMarOve/LeetCode-Playground/tree/master/0258-add-digits) |
 | [0268-missing-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0268-missing-number) |
 | [0412-fizz-buzz](https://github.com/JMarOve/LeetCode-Playground/tree/master/0412-fizz-buzz) |
 | [1395-minimum-time-visiting-all-points](https://github.com/JMarOve/LeetCode-Playground/tree/master/1395-minimum-time-visiting-all-points) |
@@ -100,6 +101,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 |  |
 | ------- |
 | [0054-spiral-matrix](https://github.com/JMarOve/LeetCode-Playground/tree/master/0054-spiral-matrix) |
+| [0258-add-digits](https://github.com/JMarOve/LeetCode-Playground/tree/master/0258-add-digits) |
 | [0412-fizz-buzz](https://github.com/JMarOve/LeetCode-Playground/tree/master/0412-fizz-buzz) |
 ## Trie
 |  |
@@ -142,4 +144,8 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 | ------- |
 | [0050-powx-n](https://github.com/JMarOve/LeetCode-Playground/tree/master/0050-powx-n) |
 | [0231-power-of-two](https://github.com/JMarOve/LeetCode-Playground/tree/master/0231-power-of-two) |
+## Number Theory
+|  |
+| ------- |
+| [0258-add-digits](https://github.com/JMarOve/LeetCode-Playground/tree/master/0258-add-digits) |
 <!---LeetCode Topics End-->
