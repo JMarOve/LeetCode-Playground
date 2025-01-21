@@ -46,6 +46,7 @@ Just me wrestling with LeetCode problems in Python (for now)  for fun"
 | [0070-climbing-stairs](https://github.com/JMarOve/LeetCode-Playground/tree/master/0070-climbing-stairs) |
 | [0231-power-of-two](https://github.com/JMarOve/LeetCode-Playground/tree/master/0231-power-of-two) |
 | [0258-add-digits](https://github.com/JMarOve/LeetCode-Playground/tree/master/0258-add-digits) |
+| [0263-ugly-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0263-ugly-number) |
 | [0268-missing-number](https://github.com/JMarOve/LeetCode-Playground/tree/master/0268-missing-number) |
 | [0412-fizz-buzz](https://github.com/JMarOve/LeetCode-Playground/tree/master/0412-fizz-buzz) |
 | [1395-minimum-time-visiting-all-points](https://github.com/JMarOve/LeetCode-Playground/tree/master/1395-minimum-time-visiting-all-points) |
