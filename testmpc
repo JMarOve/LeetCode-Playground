@@ -1,0 +1,532 @@
+"""
+MPC Data-Only Forecast with Latent Signal Extraction (PCA + Autoencoder)
+Author: ChatGPT (GPT-5 Thinking mini)
+- Pure numeric features only (no NLP)
+- Automatically extract latent signals from data (PCA, Autoencoder)
+- Combine original features + latent signals, train ensemble, evaluate
+- Produce a rich HTML report with figures and (optional) SHAP explanations
+
+How to use:
+- Place your CSV at /mnt/data/your_file.csv (or set DATA_PATH)
+- CSV must contain 'date' (YYYY-MM-DD) and 'y' target in {-1,0,1} or map-able labels
+- Run the script. Outputs saved under OUTDIR.
+
+Notes:
+- If TensorFlow not available, autoencoder part will be skipped (the script tries to import it).
+- If shap not available, SHAP explanations will be skipped.
+"""
+
+import os
+import json
+import random
+from datetime import datetime
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+from sklearn.model_selection import TimeSeriesSplit, RandomizedSearchCV
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier, VotingClassifier
+from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay, roc_curve, roc_auc_score
+from sklearn.inspection import permutation_importance
+from sklearn.exceptions import NotFittedError
+
+import joblib
+import warnings
+warnings.filterwarnings("ignore")
+
+# ----------------------------
+# Configuration
+# ----------------------------
+OUTDIR = "/mnt/data/mpc_with_latent_signals"
+os.makedirs(OUTDIR, exist_ok=True)
+
+# Set this to your CSV path if you have one; otherwise the script uses a synthetic fallback
+DATA_PATH = None  # e.g. "/mnt/data/mpc_user_data.csv"
+
+RANDOM_STATE = 42
+np.random.seed(RANDOM_STATE)
+random.seed(RANDOM_STATE)
+
+# Latent extraction options
+USE_PCA = True            # extract PCA components
+N_PCA = 8                 # number of PCA components to extract
+USE_AE = True             # try to extract autoencoder bottleneck features
+AE_BOTTLENECK_DIM = 6    # latent dimension for autoencoder
+AE_EPOCHS = 120
+AE_BATCH = 32
+
+# Modeling options
+TEST_SIZE_RATIO = 0.2     # chronological holdout
+TS_CV_SPLITS = 4
+RANDOM_SEARCH_ITERS = 6
+
+# ----------------------------
+# Optional imports: TensorFlow (for AE) and SHAP
+# ----------------------------
+TF_AVAILABLE = False
+SHAP_AVAILABLE = False
+try:
+    import tensorflow as tf
+    from tensorflow.keras import layers, models, optimizers, callbacks
+    TF_AVAILABLE = True
+except Exception:
+    TF_AVAILABLE = False
+
+try:
+    import shap
+    SHAP_AVAILABLE = True
+except Exception:
+    SHAP_AVAILABLE = False
+
+# ----------------------------
+# Utilities: plotting & saving
+# ----------------------------
+def save_fig(fig, fname, dpi=160):
+    path = os.path.join(OUTDIR, fname)
+    fig.savefig(path, bbox_inches="tight", dpi=dpi)
+    plt.close(fig)
+    return path
+
+def img_tag(path, width="100%"):
+    return f'<img src="sandbox:{path}" style="width:{width};max-width:100%;">'
+
+# ----------------------------
+# Synthetic fallback dataset
+# ----------------------------
+def make_synth(n_months=180):
+    start = datetime(2011, 1, 1)
+    dates = [pd.Timestamp(start) + pd.DateOffset(months=i) for i in range(n_months)]
+    t = np.arange(n_months)
+
+    inflation_yoy = 2 + 1.1*np.sin(t/6) + 0.015*t + np.random.normal(0,0.25,n_months)
+    unemployment = 6 - 0.3*np.sin(t/7) - 0.01*t + np.random.normal(0,0.2,n_months)
+    gdp_qoq = 0.35 + 0.15*np.sin(t/5) + np.random.normal(0,0.12,n_months)
+    pmi = 50 + 4.5*np.sin(t/4) + np.random.normal(0,1.3,n_months)
+    term_slope = 1.0 + 0.5*np.sin(t/9) + np.random.normal(0,0.15,n_months)
+    credit_spread = 1.2 + 0.4*np.cos(t/6) + np.random.normal(0,0.12,n_months)
+    equity_vol = 15 + 5*np.abs(np.sin(t/10)) + np.random.normal(0,1.5,n_months)
+    fx = 1.3 + 0.02*np.sin(t/15) + np.random.normal(0,0.01,n_months)
+
+    signal = (inflation_yoy - unemployment/3) + 0.08*(pmi-50) + 0.4*gdp_qoq - 0.35*credit_spread + 0.2*term_slope
+    score = signal + np.random.normal(0,0.6,n_months)
+    y = np.where(score > 1.4, 1, np.where(score < 0.1, -1, 0))
+
+    df = pd.DataFrame({
+        "date": dates,
+        "inflation_yoy": inflation_yoy,
+        "unemployment": unemployment,
+        "gdp_qoq": gdp_qoq,
+        "pmi": pmi,
+        "term_slope": term_slope,
+        "credit_spread": credit_spread,
+        "equity_vol": equity_vol,
+        "fx": fx,
+        "y": y
+    })
+    return df.sort_values("date").reset_index(drop=True)
+
+# ----------------------------
+# Load dataset
+# ----------------------------
+if DATA_PATH and os.path.exists(DATA_PATH):
+    df = pd.read_csv(DATA_PATH, parse_dates=["date"])
+else:
+    df = make_synth()
+
+if "date" not in df.columns or "y" not in df.columns:
+    raise ValueError("Dataset must have 'date' and 'y' columns (target).")
+
+df = df.sort_values("date").reset_index(drop=True)
+
+# If target labels are not in {-1,0,1} map them deterministically
+if not set(np.unique(df["y"])).issubset({-1, 0, 1}):
+    classes_sorted = sorted(df["y"].unique())
+    mapping = {c: v for c, v in zip(classes_sorted, [-1, 0, 1][:len(classes_sorted)])}
+    df["y"] = df["y"].map(mapping)
+
+# Features
+date_col = "date"
+target_col = "y"
+feature_cols = [c for c in df.columns if c not in [date_col, target_col] and np.issubdtype(df[c].dtype, np.number)]
+if len(feature_cols) == 0:
+    raise ValueError("Need at least one numeric feature column.")
+
+# Chronological train/test split
+split_idx = int(len(df) * (1 - TEST_SIZE_RATIO))
+train_df = df.iloc[:split_idx].copy()
+test_df = df.iloc[split_idx:].copy()
+
+X_train_raw = train_df[feature_cols].copy()
+X_test_raw = test_df[feature_cols].copy()
+y_train = train_df[target_col].values
+y_test = test_df[target_col].values
+
+# Standardize base features (fit on train only)
+scaler = StandardScaler()
+X_train_scaled = pd.DataFrame(scaler.fit_transform(X_train_raw), columns=feature_cols, index=X_train_raw.index)
+X_test_scaled = pd.DataFrame(scaler.transform(X_test_raw), columns=feature_cols, index=X_test_raw.index)
+
+# Save scaler for later
+joblib.dump(scaler, os.path.join(OUTDIR, "scaler.joblib"))
+
+# ----------------------------
+# Latent signal extraction: PCA
+# ----------------------------
+pca_components_train = None
+pca_components_test = None
+pca_model = None
+if USE_PCA and N_PCA > 0:
+    pca_model = PCA(n_components=min(N_PCA, len(feature_cols)), random_state=RANDOM_STATE)
+    pca_components_train = pca_model.fit_transform(X_train_scaled)
+    pca_components_test = pca_model.transform(X_test_scaled)
+    pca_cols = [f"PCA_{i+1}" for i in range(pca_components_train.shape[1])]
+    pca_train_df = pd.DataFrame(pca_components_train, columns=pca_cols, index=X_train_scaled.index)
+    pca_test_df = pd.DataFrame(pca_components_test, columns=pca_cols, index=X_test_scaled.index)
+    joblib.dump(pca_model, os.path.join(OUTDIR, "pca_model.joblib"))
+else:
+    pca_cols = []
+    pca_train_df = pd.DataFrame(index=X_train_scaled.index)
+    pca_test_df = pd.DataFrame(index=X_test_scaled.index)
+
+# ----------------------------
+# Latent signal extraction: Autoencoder (nonlinear)
+# ----------------------------
+ae_train_df = pd.DataFrame(index=X_train_scaled.index)
+ae_test_df = pd.DataFrame(index=X_test_scaled.index)
+ae_model = None
+if USE_AE and TF_AVAILABLE:
+    # Build a simple fully-connected autoencoder
+    n_feats = X_train_scaled.shape[1]
+    bottleneck_dim = min(AE_BOTTLENECK_DIM, n_feats - 1) if n_feats > 1 else 1
+
+    tf.random.set_seed(RANDOM_STATE)
+    inp = layers.Input(shape=(n_feats,))
+    x = layers.Dense(max(n_feats // 2, bottleneck_dim * 2), activation="elu")(inp)
+    x = layers.Dense(max(n_feats // 4, bottleneck_dim * 2), activation="elu")(x)
+    bottleneck = layers.Dense(bottleneck_dim, activation="linear", name="bottleneck")(x)
+    x = layers.Dense(max(n_feats // 4, bottleneck_dim * 2), activation="elu")(bottleneck)
+    x = layers.Dense(max(n_feats // 2, bottleneck_dim * 2), activation="elu")(x)
+    out = layers.Dense(n_feats, activation="linear")(x)
+
+    ae = models.Model(inputs=inp, outputs=out)
+    ae.compile(optimizer=optimizers.Adam(learning_rate=1e-3), loss="mse")
+    # Early stopping
+    es = callbacks.EarlyStopping(monitor="val_loss", patience=10, restore_best_weights=True)
+    # Fit
+    Xae_train = X_train_scaled.values.astype(np.float32)
+    Xae_val = X_test_scaled.values.astype(np.float32)
+    ae.fit(Xae_train, Xae_train, validation_data=(Xae_val, Xae_val),
+           epochs=AE_EPOCHS, batch_size=AE_BATCH, callbacks=[es], verbose=0)
+
+    # Extract bottleneck model
+    bottleneck_model = models.Model(inputs=ae.input, outputs=ae.get_layer("bottleneck").output)
+    ae_train_latent = bottleneck_model.predict(Xae_train)
+    ae_test_latent = bottleneck_model.predict(Xae_val)
+
+    ae_cols = [f"AE_{i+1}" for i in range(ae_train_latent.shape[1])]
+    ae_train_df = pd.DataFrame(ae_train_latent, columns=ae_cols, index=X_train_scaled.index)
+    ae_test_df = pd.DataFrame(ae_test_latent, columns=ae_cols, index=X_test_scaled.index)
+
+    ae_model = ae
+    joblib.dump(ae, os.path.join(OUTDIR, "autoencoder_keras_model.h5"))
+else:
+    if USE_AE:
+        print("TensorFlow not available — skipping autoencoder extraction.")
+    ae_cols = []
+
+# ----------------------------
+# Build final training matrices (original + latent)
+# ----------------------------
+X_train_combined = pd.concat([X_train_scaled.reset_index(drop=True),
+                              pca_train_df.reset_index(drop=True),
+                              ae_train_df.reset_index(drop=True)], axis=1)
+X_test_combined = pd.concat([X_test_scaled.reset_index(drop=True),
+                             pca_test_df.reset_index(drop=True),
+                             ae_test_df.reset_index(drop=True)], axis=1)
+
+combined_feature_cols = list(X_train_combined.columns)
+
+# Persist combined feature names
+with open(os.path.join(OUTDIR, "combined_feature_cols.json"), "w") as f:
+    json.dump(combined_feature_cols, f, indent=2)
+
+# ----------------------------
+# Modeling: hyperparam search and training
+# ----------------------------
+pre = ColumnTransformer([("pass", "passthrough", combined_feature_cols)], remainder="drop")
+
+models = {
+    "logreg": LogisticRegression(max_iter=2000, random_state=RANDOM_STATE),
+    "gb": GradientBoostingClassifier(random_state=RANDOM_STATE),
+    "rf": RandomForestClassifier(n_estimators=500, random_state=RANDOM_STATE)
+}
+
+param_dists = {
+    "logreg": {"clf__C": np.logspace(-3, 2, 10)},
+    "gb": {"clf__n_estimators": [150, 250, 400], "clf__learning_rate": [0.01, 0.03, 0.07], "clf__max_depth": [2, 3, 4]},
+    "rf": {"clf__n_estimators": [300, 500], "clf__max_depth": [None, 6, 10], "clf__max_features": ["sqrt", "log2", None]}
+}
+
+best_searches = {}
+for name, est in models.items():
+    pipe = Pipeline([("pre", pre), ("clf", est)])
+    rs = RandomizedSearchCV(pipe, param_distributions=param_dists[name],
+                            n_iter=RANDOM_SEARCH_ITERS, cv=TimeSeriesSplit(n_splits=TS_CV_SPLITS),
+                            scoring="f1_macro", random_state=RANDOM_STATE, n_jobs=1, verbose=0)
+    rs.fit(X_train_combined, y_train)
+    best_searches[name] = rs
+    print(f"Completed search: {name}, best f1_macro={rs.best_score_:.3f}")
+
+# Build ensemble from best estimators
+estimators_for_ensemble = [(k, best_searches[k].best_estimator_) for k in best_searches.keys()]
+ensemble = VotingClassifier(estimators=estimators_for_ensemble, voting="soft", flatten_transform=True)
+ensemble.fit(X_train_combined, y_train)
+
+# Save model & searches
+joblib.dump(ensemble, os.path.join(OUTDIR, "ensemble_model.joblib"))
+for k, rs in best_searches.items():
+    joblib.dump(rs, os.path.join(OUTDIR, f"search_{k}.joblib"))
+
+# ----------------------------
+# Evaluation & diagnostics
+# ----------------------------
+proba = ensemble.predict_proba(X_test_combined)
+classes = ensemble.classes_
+y_pred = classes[np.argmax(proba, axis=1)]
+report = classification_report(y_test, y_pred, digits=3)
+cm = confusion_matrix(y_test, y_pred, labels=[-1, 0, 1])
+
+with open(os.path.join(OUTDIR, "classification_report.txt"), "w") as f:
+    f.write(report)
+
+# Confusion matrix figure
+fig_cm, ax = plt.subplots(figsize=(6, 5))
+disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=[-1, 0, 1])
+disp.plot(ax=ax, colorbar=False)
+ax.set_title("Confusion Matrix (Holdout)")
+cm_path = save_fig(fig_cm, "fig_confusion_matrix.png")
+
+# Probability timeline
+fig_prob, ax = plt.subplots(figsize=(11, 4))
+for k, cls in enumerate(classes):
+    ax.plot(test_df[date_col].values, proba[:, k], label=f"P(class={cls})")
+ax.set_xlabel("Date")
+ax.set_ylabel("Predicted probability")
+ax.set_title("Predicted Class Probabilities over Time (Holdout)")
+ax.legend()
+prob_path = save_fig(fig_prob, "fig_prob_time.png")
+
+# ROC per class
+roc_paths = []
+try:
+    class_to_idx = {c: i for i, c in enumerate(classes)}
+    y_test_idx = np.array([class_to_idx[v] for v in y_test])
+    for k, cls in enumerate(classes):
+        y_true_bin = (y_test_idx == k).astype(int)
+        fpr, tpr, _ = roc_curve(y_true_bin, proba[:, k])
+        auc = roc_auc_score(y_true_bin, proba[:, k])
+        fig_roc, ax = plt.subplots(figsize=(5, 4))
+        ax.plot(fpr, tpr, label=f"AUC={auc:.3f}")
+        ax.plot([0, 1], [0, 1], linestyle="--")
+        ax.set_xlabel("FPR")
+        ax.set_ylabel("TPR")
+        ax.set_title(f"ROC — class {cls}")
+        ax.legend()
+        roc_paths.append(save_fig(fig_roc, f"fig_roc_class_{cls}.png"))
+except Exception:
+    pass
+
+# ----------------------------
+# Feature importances: tree-based average (GB & RF)
+# ----------------------------
+gb_best = best_searches["gb"].best_estimator_
+rf_best = best_searches["rf"].best_estimator_
+# Fit on full train (best estimators contain pipeline)
+gb_best.fit(X_train_combined, y_train)
+rf_best.fit(X_train_combined, y_train)
+
+def extract_feature_importances(est_pipeline):
+    """Extract feature importances from a fitted pipeline where the final step is a tree model."""
+    try:
+        feat_imp = est_pipeline.named_steps["clf"].feature_importances_
+        return feat_imp
+    except Exception:
+        return np.zeros(len(combined_feature_cols))
+
+gb_imp = extract_feature_importances(gb_best)
+rf_imp = extract_feature_importances(rf_best)
+avg_imp = (gb_imp + rf_imp) / 2.0
+imp_df = pd.DataFrame({"feature": combined_feature_cols, "importance": avg_imp}).sort_values("importance", ascending=False)
+
+fig_imp, ax = plt.subplots(figsize=(8, max(3, 0.25 * len(imp_df))))
+ax.barh(imp_df["feature"], imp_df["importance"])
+ax.invert_yaxis()
+ax.set_title("Average Feature Importance (GB & RF)")
+imp_path = save_fig(fig_imp, "fig_feature_importance.png")
+
+# ----------------------------
+# Permutation importance on holdout (global)
+# ----------------------------
+perm = permutation_importance(ensemble, X_test_combined, y_test, n_repeats=12, random_state=RANDOM_STATE, scoring="neg_log_loss")
+perm_df = pd.DataFrame({"feature": combined_feature_cols, "delta": perm["importances_mean"]}).sort_values("delta", ascending=False)
+
+fig_perm, ax = plt.subplots(figsize=(8, max(3, 0.25 * len(perm_df))))
+ax.barh(perm_df["feature"], perm_df["delta"])
+ax.invert_yaxis()
+ax.set_title("Permutation Importance on Holdout (Δ in neg_log_loss)")
+perm_path = save_fig(fig_perm, "fig_permutation_importance.png")
+
+# ----------------------------
+# Scenario analysis (top features + latents)
+# ----------------------------
+top_feats = list(imp_df["feature"].head(5))
+baseline = X_test_combined.iloc[[-1]].copy() if len(X_test_combined) else X_train_combined.iloc[[-1]].copy()
+
+scenario_paths = []
+for feat in top_feats:
+    lo, hi = np.percentile(df[feat] if feat in df.columns else df[feat.replace("PCA_", "inflation_yoy")], [5, 95]) if feat in df.columns else ( -1, 1)
+    # safer: use percentiles from combined features matrix
+    col_vals_full = np.concatenate([X_train_combined[feat].values, X_test_combined[feat].values])
+    lo, hi = np.percentile(col_vals_full, [5, 95])
+    grid = np.linspace(lo, hi, 60)
+    rows = []
+    for v in grid:
+        r = baseline.copy()
+        r[feat] = v
+        rows.append(r)
+    X_grid = pd.concat(rows, ignore_index=True)
+    proba_grid = ensemble.predict_proba(X_grid)
+    # Identify indices
+    idx_hike = np.where(classes == 1)[0][0] if 1 in classes else 0
+    idx_cut = np.where(classes == -1)[0][0] if -1 in classes else 0
+    fig_s, ax = plt.subplots(figsize=(7, 4))
+    ax.plot(grid, proba_grid[:, idx_hike], label="P(hike)")
+    ax.plot(grid, proba_grid[:, idx_cut], label="P(cut)")
+    ax.set_xlabel(feat)
+    ax.set_ylabel("Predicted probability")
+    ax.set_title(f"Scenario: vary {feat}")
+    ax.legend()
+    scenario_paths.append(save_fig(fig_s, f"fig_scenario_{feat}.png"))
+
+# ----------------------------
+# (Optional) SHAP explanations for the ensemble (approximate)
+# ----------------------------
+shap_summary_path = None
+if SHAP_AVAILABLE:
+    try:
+        # Use TreeExplainer on RF/GB average or KernelExplainer as fallback
+        # We'll explain the RandomForest best estimator for speed/stability
+        rf_pipe = rf_best
+        X_sample = X_test_combined.iloc[:min(200, len(X_test_combined))].copy()
+        # Extract the inner classifier and the preprocessor
+        preprocessor = rf_pipe.named_steps["pre"]
+        clf = rf_pipe.named_steps["clf"]
+        # Get transformed matrix (pass through pre = passthrough)
+        X_trans = preprocessor.transform(X_sample)
+        # If classifier is tree-based, use TreeExplainer
+        explainer = shap.Explainer(clf)
+        shap_values = explainer(X_trans)
+        # summary plot
+        fig_shap = shap.plots.bar(shap_values, show=False)
+        # Save using matplotlib if shap returns a matplotlib figure; else skip
+        try:
+            plt.gcf().savefig(os.path.join(OUTDIR, "fig_shap_summary.png"), dpi=160, bbox_inches="tight")
+            shap_summary_path = os.path.join(OUTDIR, "fig_shap_summary.png")
+            plt.close("all")
+        except Exception:
+            shap_summary_path = None
+    except Exception as e:
+        print("SHAP explanation failed:", e)
+        shap_summary_path = None
+else:
+    print("shap not installed — skipping SHAP explanations (optional).")
+
+# ----------------------------
+# Write HTML Report
+# ----------------------------
+report_html = f"""
+<html><head><meta charset="utf-8"><title>MPC — Latent Signals Report</title>
+<style>
+body{{font-family:Arial, sans-serif; margin:20px; line-height:1.45}}
+h1{{margin-top:0}}
+.card{{border:1px solid #eee; padding:12px; border-radius:8px; margin-bottom:14px}}
+.small{{color:#555;font-size:0.95em}}
+table{{border-collapse:collapse}}
+th,td{{border:1px solid #ddd;padding:6px}}
+th{{background:#f6f6f6}}
+img{{border:1px solid #eee;border-radius:6px}}
+</style></head><body>
+<h1>MPC Forecast — Data-Only with Latent Signals</h1>
+<div class="small">Generated: {datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")}</div>
+
+<div class="card">
+<h2>Executive summary</h2>
+<p>Pipeline extracts latent signals (PCA + Autoencoder) and trains an ensemble (LogReg, GB, RF) to forecast MPC decision classes (-1=cut, 0=hold, 1=hike).</p>
+<pre style="background:#fafafa;padding:8px;border-radius:6px">{report}</pre>
+</div>
+
+<h2>Validation</h2>
+<h3>Confusion matrix</h3>
+{img_tag(cm_path,'70%')}
+<h3>Predicted probabilities over time</h3>
+{img_tag(prob_path,'95%')}
+<h3>ROC curves</h3>
+{"".join(img_tag(p,'45%') for p in roc_paths)}
+
+<h2>Latent signals extracted</h2>
+<p>Included components: PCA components ({len(pca_cols)}) and Autoencoder bottleneck ({len(ae_cols)}).</p>
+
+<h2>Feature importance</h2>
+{img_tag(imp_path,'80%')}
+<h3>Permutation importance (holdout)</h3>
+{img_tag(perm_path,'80%')}
+
+<h2>Scenario analysis (top features)</h2>
+{"".join(img_tag(p,'70%') for p in scenario_paths)}
+
+"""
+
+if shap_summary_path:
+    report_html += "<h2>SHAP summary (approx.)</h2>" + img_tag(shap_summary_path, "70%")
+
+# Add model tuning table
+tuning_rows = ""
+for name, rs in best_searches.items():
+    tuning_rows += f"<tr><td>{name}</td><td>{rs.best_score_:.3f}</td><td><pre>{json.dumps(rs.best_params_, default=str)}</pre></td></tr>"
+
+report_html += f"""
+<h2>Model selection (time-series CV)</h2>
+<table><tr><th>Model</th><th>Best CV f1_macro</th><th>Best params</th></tr>
+{tuning_rows}
+</table>
+
+<div class="card"><h3>How to use</h3>
+<p>To use with your data: set DATA_PATH at the top to your CSV path (must contain 'date' and 'y' columns and numeric features). The pipeline will standardize features, extract latent signals automatically, and retrain. All artifacts saved under {OUTDIR}.</p>
+</div>
+</body></html>
+"""
+
+with open(os.path.join(OUTDIR, "report.html"), "w", encoding="utf-8") as f:
+    f.write(report_html)
+
+# Save some artifacts / metadata
+meta = {
+    "date_generated": datetime.utcnow().isoformat(),
+    "use_pca": USE_PCA,
+    "n_pca": N_PCA,
+    "use_autoencoder": USE_AE and TF_AVAILABLE,
+    "ae_bottleneck_dim": AE_BOTTLENECK_DIM,
+    "combined_features": combined_feature_cols,
+    "models": {k: {"best_score": float(best_searches[k].best_score_), "best_params": best_searches[k].best_params_} for k in best_searches}
+}
+with open(os.path.join(OUTDIR, "metadata.json"), "w") as f:
+    json.dump(meta, f, indent=2)
+
+print("Done. Artifacts saved to:", OUTDIR)
+print("Report:", os.path.join(OUTDIR, "report.html"))
+print("Model:", os.path.join(OUTDIR, "ensemble_model.joblib"))
